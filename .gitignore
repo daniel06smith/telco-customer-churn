@@ -14,8 +14,9 @@ env/
 # Data — raw data is never committed; processed can be regenerated
 data/processed/
 
-# Models — trained artifacts, not source code
-/models/
+# Models — track the trained artefacts needed by the app
+# (git can't un-ignore files inside an ignored directory, so we track the
+# whole models/ folder and only exclude MLflow's own run storage)
 /mlruns/
 
 # Jupyter
