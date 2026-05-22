@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+dist/
+build/
+
+# Virtual environment
+.venv/
+venv/
+env/
+
+# Data — raw data is never committed; processed can be regenerated
+data/processed/
+
+# Models — trained artifacts, not source code
+/models/
+/mlruns/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# MLflow SQLite database — regenerated each run
+mlflow.db
+
+# Claude Code local settings
+.claude/
