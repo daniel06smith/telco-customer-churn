@@ -22,6 +22,23 @@ MULTI_CLASS_COLS = [
     "Contract", "PaymentMethod",
 ]
 
+# All known category values for each multi-class column, in alphabetical order.
+# Must match training-time ordering so drop_first=True always drops the same
+# reference category regardless of how many unique values appear in the batch.
+KNOWN_CATEGORIES = {
+    "MultipleLines":    ["No", "No phone service", "Yes"],
+    "InternetService":  ["DSL", "Fiber optic", "No"],
+    "OnlineSecurity":   ["No", "No internet service", "Yes"],
+    "OnlineBackup":     ["No", "No internet service", "Yes"],
+    "DeviceProtection": ["No", "No internet service", "Yes"],
+    "TechSupport":      ["No", "No internet service", "Yes"],
+    "StreamingTV":      ["No", "No internet service", "Yes"],
+    "StreamingMovies":  ["No", "No internet service", "Yes"],
+    "Contract":         ["Month-to-month", "One year", "Two year"],
+    "PaymentMethod":    ["Bank transfer (automatic)", "Credit card (automatic)",
+                         "Electronic check", "Mailed check"],
+}
+
 # --- Modelling ---
 TEST_SIZE = 0.2
 RANDOM_STATE = 42

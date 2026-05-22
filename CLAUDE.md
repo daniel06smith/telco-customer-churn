@@ -96,28 +96,43 @@ Then open http://localhost:8501
 | 3 | Done | Optuna hyperparameter tuning |
 | 4 | Done | Streamlit prediction app |
 | 5 | Done | Docker containerization |
-| 6 | Next | AWS deployment (ECR + App Runner) |
-| 7 | Later | GitHub Actions CI/CD |
+| 6 | Next | Streamlit Community Cloud (public demo link) |
+| 7 | Next | AWS deployment (ECR + App Runner) — for learning + resume |
+| 8 | Later | GitHub Actions CI/CD |
 
 ---
 
-## AWS deployment (Phase 6 — next steps)
+## Deployment strategy (decided 2026-05-22)
 
-1. Push image to Amazon ECR (Elastic Container Registry)
-2. Deploy to AWS App Runner (simplest path: connects to ECR, auto-scales, HTTPS included)
+Two-track approach:
+- **Streamlit Community Cloud** — free, always-on, public URL for recruiters to click
+- **AWS ECR + App Runner** — for learning AWS and resume credibility; kept paused when not demoing
 
-Commands (when ready):
-```bash
-# Authenticate Docker to ECR
-aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin <account-id>.dkr.ecr.us-east-1.amazonaws.com
+Why two tracks: App Runner paused = no public access without AWS credentials. Streamlit Community Cloud solves the "recruiter can click it anytime" problem for free.
 
-# Create ECR repo (once)
-aws ecr create-repository --repository-name telco-churn-app
+### Phase 6: Streamlit Community Cloud
+1. Push project to GitHub (public repo)
+2. Go to share.streamlit.io, connect GitHub, select `app/app.py`
+3. Set any secrets/env vars if needed
+4. Get a public URL like `https://yourapp.streamlit.app`
 
-# Tag and push
-docker tag telco-churn-app:latest <account-id>.dkr.ecr.us-east-1.amazonaws.com/telco-churn-app:latest
-docker push <account-id>.dkr.ecr.us-east-1.amazonaws.com/telco-churn-app:latest
-```
+Note: Streamlit Community Cloud runs from the GitHub repo directly — it does NOT use Docker. The `requirements.txt` is used to install dependencies.
+
+### Phase 7: AWS deployment
+
+**Explain each AWS tool when we get to it** — user is new to AWS and wants to understand
+the purpose and use case of each service, not just run commands.
+
+Tools involved and what they do (expand when teaching):
+- **AWS CLI** — command-line tool to control all AWS services from your terminal
+- **IAM** — Identity and Access Management; controls who/what can do what in AWS
+- **Amazon ECR** — private Docker registry (like Docker Hub but inside your AWS account)
+- **AWS App Runner** — runs your container as a web service; handles HTTPS, scaling, routing
+
+Cost-minimization approach:
+- Keep App Runner paused when not actively demoing
+- Use smallest instance (0.25 vCPU / 0.5 GB RAM)
+- ECR storage only: ~$0.08/month when paused
 
 ---
 

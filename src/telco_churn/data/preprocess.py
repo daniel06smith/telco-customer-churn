@@ -1,6 +1,6 @@
 import pandas as pd
 from telco_churn.config import (
-    TARGET_COL, DROP_COLS, BINARY_COLS, BINARY_MAP, MULTI_CLASS_COLS
+    TARGET_COL, DROP_COLS, BINARY_COLS, BINARY_MAP, MULTI_CLASS_COLS, KNOWN_CATEGORIES
 )
 
 
@@ -19,9 +19,14 @@ def encode_binary_columns(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def encode_multiclass_columns(df: pd.DataFrame) -> pd.DataFrame:
+    df = df.copy()
     cols = [c for c in MULTI_CLASS_COLS if c in df.columns]
+    # Wrap each column in pd.Categorical with the full known category list so
+    # pd.get_dummies always emits the same dummy columns regardless of how many
+    # unique values are present in this batch (critical for single-row inference).
+    for col in cols:
+        df[col] = pd.Categorical(df[col], categories=KNOWN_CATEGORIES[col])
     df = pd.get_dummies(df, columns=cols, drop_first=True)
-    # get_dummies returns bool dtype; cast to int for model compatibility
     bool_cols = df.select_dtypes(include="bool").columns
     df[bool_cols] = df[bool_cols].astype(int)
     return df

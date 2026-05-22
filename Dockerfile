@@ -27,4 +27,4 @@ EXPOSE 8501
 # --server.address=0.0.0.0 is required so the app is reachable from
 # outside the container. Without it, Streamlit only listens on localhost
 # inside the container and you can never connect to it.
-CMD ["streamlit", "run", "app/app.py", "--server.port=8501", "--server.address=0.0.0.0", "--server.headless=true"]
+CMD ["streamlit", "run", "app/Predictor.py", "--server.port=8501", "--server.address=0.0.0.0", "--server.headless=true"]
