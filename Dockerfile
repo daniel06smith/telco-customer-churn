@@ -8,13 +8,12 @@ WORKDIR /app
 # Copy requirements FIRST, install, THEN copy source code.
 # Docker caches each step. If you change only your Python files,
 # Docker reuses the cached pip install step — much faster rebuilds.
+# Copy package metadata before requirements so -e . in requirements.txt resolves
+COPY pyproject.toml setup.py ./
+COPY src/ src/
+
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
-
-# Install the telco_churn package in editable mode
-COPY pyproject.toml .
-COPY src/ src/
-RUN pip install --no-cache-dir -e .
 
 # Copy app code and the trained model artefacts
 COPY app/ app/
